@@ -66,19 +66,23 @@ def run_agent_by_name(agent_name, input_text, params=None):
     from orchestrator.agents.summarizer import summarize_p0_tasks
     from orchestrator.agents.helloWorld import HelloWorld
     from utils.discord_notifier import send_discord_message
-
+    from orchestrator.agents.ollama_runner import run_ollama
+    
     if agent_name == "gmail_reader":
         return fetch_recent_emails()
     elif agent_name == "gpt_task_extractor":
         return extract_p0_tasks(input_text)
     elif agent_name == "gpt_summarizer":
         return summarize_p0_tasks(input_text)
+    elif agent_name == "ollama_agent":
+      return run_ollama(input_text, params or {})
     elif agent_name == "file_writer":
         with open("data/p0_digest_summary.txt", "w") as f:
             f.write(input_text)
         return "✅ written to disk"
     elif agent_name == "discord_notifier":
-        send_discord_message(input_text)
+        topic = params.get("topic", "🧠 Daily P0 Digest")
+        send_discord_message(topic, input_text)
         return "✅ sent to Discord"
     elif agent_name == "helloWorld":
         return HelloWorld()

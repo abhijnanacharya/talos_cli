@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-def send_discord_message(message: str):
+def send_discord_message(topic: str, message: str):
     """
     Sends a message to a Discord channel using a webhook URL.
     The message can be plain text or Markdown-formatted.
@@ -14,7 +14,7 @@ def send_discord_message(message: str):
         raise ValueError("DISCORD_WEBHOOK_URL not set in .env file")
 
     payload = {
-        "content": f"📌 **Daily P0 Digest**\n\n{message}"
+        "content": f"📌 **{topic}**\n\n{message}"
     }
 
     response = requests.post(webhook_url, json=payload)
