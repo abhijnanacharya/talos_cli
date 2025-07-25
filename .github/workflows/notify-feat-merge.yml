@@ -1,0 +1,39 @@
+name: 🚀 Notify Discord on Feature Merge
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  send-merge-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Commit Summary to Discord
+        uses: actions/github-script@v7
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        with:
+          script: |
+            const fetch = require('node-fetch');
+
+            const commits = context.payload.commits
+              .map(c => `• [\`${c.id.slice(0, 7)}\`](${c.url}) ${c.message.split('\n')[0]} — _${c.author.name}_`)
+              .join('\n');
+
+            const embed = {
+              title: "🛠️ New Features Merged to `main`",
+              description: commits || "No commit messages available.",
+              color: 0x00b0f4,
+              timestamp: new Date().toISOString(),
+              footer: {
+                text: `${context.repo.owner}/${context.repo.repo}`,
+                icon_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              }
+            };
+
+            await fetch(process.env.DISCORD_WEBHOOK_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ embeds: [embed] })
+            });
