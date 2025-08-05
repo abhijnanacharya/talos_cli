@@ -6,6 +6,9 @@ from pathlib import Path
 from orchestrator.dag_executor import run_dag_from_yaml
 from typer.core import TyperGroup
 from typer import Context
+from typing import Optional
+from dotenv import load_dotenv
+
 
 console = Console()
 RUN_HISTORY_FILE = Path(".dag_executor/run_history.log")
@@ -42,8 +45,22 @@ app = typer.Typer(cls=TalosGroup, add_completion=True)
 
 
 @app.command()
-def run(f: Path = typer.Option(..., "-f", "--file", help="Path to DAG YAML file")):
-    """Run a DAG YAML file."""
+def run(
+    f: Path = typer.Option(..., "-f", "--file", help="Path to DAG YAML file"),
+    env_file: Optional[Path] = typer.Option(None, "--env-file", help="Path to .env file with secrets (like OPENAI_API_KEY)")
+):
+    """Run a DAG YAML file, optionally loading secrets from .env."""
+    
+    # Load env vars
+    if env_file:
+        if not env_file.exists():
+            typer.echo(f"❌ .env file not found: {env_file}")
+            raise typer.Exit(1)
+        load_dotenv(dotenv_path=env_file)
+        typer.echo(f"🔐 Loaded environment from: {env_file}")
+    else:
+        load_dotenv()  # Fallback to default .env in cwd, if present
+
     if not f.exists():
         typer.echo(f"❌ File not found: {f}")
         raise typer.Exit(1)
@@ -54,7 +71,6 @@ def run(f: Path = typer.Option(..., "-f", "--file", help="Path to DAG YAML file"
     RUN_HISTORY_FILE.parent.mkdir(parents=True, exist_ok=True)
     with RUN_HISTORY_FILE.open("a") as log:
         log.write(f"{f}\n")
-
 
 @app.command()
 def list():

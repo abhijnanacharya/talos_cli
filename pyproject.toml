@@ -1,6 +1,6 @@
 [project]
 name = "llm_orchestrator"
-version = "0.1.0"
+version = "0.1.1"
 description = "Orchestrates LLM agent DAGs via YAML"
 authors = [
   { name = "Abhijnan Acharya", email = "abhijnanacharya11@gmail.com" }
