@@ -1,4 +1,5 @@
-from orchestrator.dag_executor import run_dag_from_yaml
+import sys
 
-if __name__ == "__main__":
-    run_dag_from_yaml("config/agents.yaml")
+print("⚠️  [DEPRECATED] This file is no longer used. Please use the `talos` CLI instead.")
+print("   👉 Run your DAGs using: talos run -f config/agents.yaml")
+sys.exit(1)
