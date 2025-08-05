@@ -5,6 +5,8 @@ description = "Orchestrates LLM agent DAGs via YAML"
 authors = [
   { name = "Abhijnan Acharya", email = "abhijnanacharya11@gmail.com" }
 ]
+requires-python = ">=3.10"
+
 dependencies = [
   "openai",
   "pyyaml",
@@ -12,6 +14,18 @@ dependencies = [
   "schedule",
   "imaplib2",
   "requests",
-  "beautifulsoup4"
+  "beautifulsoup4",
+  "typer[all]"
 ]
-requires-python = ">=3.10"
+
+[project.scripts]
+talos = "cli.main:run_cli"
+
+
+[tool.setuptools]
+packages = [
+  "cli",
+  "orchestrator",
+  "email_client",
+  "utils"
+]

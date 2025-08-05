@@ -5,3 +5,5 @@ schedule
 imaplib2
 requests
 beautifulsoup4
+typer
+rich
