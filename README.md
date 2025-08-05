@@ -11,10 +11,10 @@ Talos is a lightweight, DAG-based orchestration framework for running LLM agent 
 - ✅ Pluggable architecture: add custom agents via `orchestrator/agents`
 - ✅ CLI interface to run DAGs like Docker/K8s:
   ```bash
-  uv run main.py --file config/test.yaml
+  talos run -f config/test.yaml
   ```
 - ✅ Dependency-respecting step execution
-- ✅ Run any DAG using: `uv run main.py -f <your-dag.yaml>`
+- ✅ Run any DAG using the `talos` command installed globally
 
 ---
 
@@ -22,14 +22,16 @@ Talos is a lightweight, DAG-based orchestration framework for running LLM agent 
 
 ```
 LLM_ORCHESTRATOR/
-├── config/                 # DAG & agent configuration
-│   ├── test.yaml          # Sample DAG definition
-│   └── agents.yaml        # Registered agents and config
+├── cli/                   # CLI entrypoint with Typer + Rich
+│   └── main.py
+├── config/                # DAG & agent configuration
+│   ├── test.yaml
+│   └── agents.yaml
 ├── data/                  # Inputs for agents (emails, etc.)
-│   └── email_client/      # Email processing logic
+│   └── email_client/
 │       ├── fetcher.py
 │       └── task_extractor.py
-├── orchestrator/          # Core DAG runner
+├── orchestrator/
 │   ├── dag_executor.py    # DAG parsing & step execution
 │   └── agents/            # Custom agents live here
 │       ├── helloWorld.py
@@ -38,8 +40,7 @@ LLM_ORCHESTRATOR/
 │       ├── gpt_task_extractor.py
 │       └── discord_notifier.py
 ├── utils/                 # Utility functions (TBD)
-├── main.py                # CLI Entrypoint
-├── pyproject.toml         # Project metadata
+├── pyproject.toml         # Project metadata (includes CLI entry)
 ├── .lock                  # uv lock file for dependencies
 ├── Dockerfile             # uv-based container build
 └── docker-compose.yaml    # Easy container execution
@@ -56,11 +57,23 @@ docker-compose build
 docker-compose up
 ```
 
-### 2. 🧪 Local Dev
+### 2. 🧪 Local Dev (CLI-based)
 
 ```bash
-uv pip install --system -r .lock
-uv run main.py --file config/test.yaml
+# Install globally in dev mode
+pip install -e .
+
+# Run a DAG
+talos run -f config/test.yaml
+
+# List previously run DAGs
+talos list
+
+# View version
+talos --version
+
+# Show help with logo and panel
+talos --help
 ```
 
 ---
@@ -147,10 +160,7 @@ This DAG runs a complete P0 triage workflow:
 
 📷 _Screenshot_:
 
-
 ![Talos_cli_example](https://github.com/user-attachments/assets/8e2691df-ed2e-405f-b622-56149a02f18c)
-
-
 
 ---
 
