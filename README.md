@@ -1,6 +1,19 @@
+
 # 🧠 Talos: YAML-First LLM DAG Orchestrator
 
-Talos is a lightweight, DAG-based orchestration framework for running LLM agent workflows, inspired by Airflow — but built for LLM-native automation using YAML files and minimal infra overhead.
+Talos is a lightweight, YAML-first DAG orchestration framework for running LLM agent workflows — inspired by Airflow, but optimized for modern LLM-native automation with minimal infra overhead.
+
+---
+
+## 📦 Install
+
+[![Talos CLI](https://img.shields.io/badge/pip-install%20talos-blue?logo=pypi)](https://github.com/abhijnanacharya/talos_cli/releases/latest)
+
+> Download the latest `.whl` or `.tar.gz` from [GitHub Releases](https://github.com/abhijnanacharya/talos_cli/releases/latest) and run:
+
+```bash
+pip install llm_orchestrator-0.1.0-py3-none-any.whl
+```
 
 ---
 
@@ -23,7 +36,9 @@ Talos is a lightweight, DAG-based orchestration framework for running LLM agent 
 ```
 LLM_ORCHESTRATOR/
 ├── cli/                   # CLI entrypoint with Typer + Rich
-│   └── main.py
+│   └── main.py            # Registered via pyproject.toml:
+│                          # [project.scripts]
+│                          # talos = "cli.main:run_cli"
 ├── config/                # DAG & agent configuration
 │   ├── test.yaml
 │   └── agents.yaml
@@ -69,7 +84,7 @@ talos run -f config/test.yaml
 # List previously run DAGs
 talos list
 
-# View version
+# Show version
 talos --version
 
 # Show help with logo and panel
