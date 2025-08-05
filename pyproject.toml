@@ -15,21 +15,22 @@ dependencies = [
   "imaplib2",
   "requests",
   "beautifulsoup4",
-  "typer[all]"
+  "typer"
 ]
 
 [project.scripts]
 talos = "cli.main:run_cli"
 
-
 [tool.setuptools]
+package-dir = {"" = "src"}
+
 packages = [
   "cli",
-  "orchestrator",
   "email_client",
+  "orchestrator",
+  "orchestrator.agents",
   "utils"
 ]
-
 
 [build-system]
 requires = ["setuptools", "wheel"]
