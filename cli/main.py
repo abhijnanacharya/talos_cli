@@ -28,28 +28,17 @@ class TalosGroup(TyperGroup):
             "[bold magenta]TALOS[/bold magenta] - YAML-first DAG Orchestrator\n"
             "🔧 Build multi-agent LLM workflows\n"
             "🚀 Created by Abhijnan Acharya\n"
-            "Reach out to me at abhijnanacharya\[at]gmail.com\n"
+            "📬 Reach me at: abhijnanachary11\[at]gmail.com\n"
             "[dim]Tip: Use --help with a command to learn more[/dim]",
             title="📦 Talos CLI",
             border_style="magenta"
         )
 
-        console.print(ascii_art,soft_wrap=True)
+        console.print(ascii_art, soft_wrap=True)
         console.print(tagline)
         return super().get_help(ctx)
 
-
 app = typer.Typer(cls=TalosGroup, add_completion=True)
-
-
-@app.callback()
-def main(
-    ctx: typer.Context,
-    version: bool = typer.Option(None, "--version", "-v", help="Show version and exit", is_eager=True)
-):
-    if version:
-        console.print("[bold green]Talos v0.1.0[/]")
-        raise typer.Exit()
 
 
 @app.command()
@@ -78,6 +67,12 @@ def list():
     with RUN_HISTORY_FILE.open() as log:
         for i, line in enumerate(log.readlines(), 1):
             typer.echo(f"{i}. {line.strip()}")
+
+
+@app.command()
+def version():
+    """Show the current version of Talos."""
+    console.print("[bold green]Talos v0.1.0[/]")
 
 
 def run_cli():
